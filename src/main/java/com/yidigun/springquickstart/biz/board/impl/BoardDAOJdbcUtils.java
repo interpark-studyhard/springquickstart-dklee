@@ -6,12 +6,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.yidigun.springquickstart.biz.board.BoardDAO;
 import com.yidigun.springquickstart.biz.board.BoardVO;
 import com.yidigun.springquickstart.biz.common.AbstractDAO;
 import com.yidigun.springquickstart.biz.common.EntityNotFoundException;
 
-@Repository("boardDAO")
-public class BoardDAO extends AbstractDAO<BoardVO> {
+@Repository("boardDAO1")
+public class BoardDAOJdbcUtils extends AbstractDAO<BoardVO> implements BoardDAO {
 	
 	private static final String BOARD_INSERT = "insert into board (seq, title, writer, content) values ((select nvl(max(seq), 0)+1, from board), ? ? ?)";
 	private static final String BOARD_UPDATE = "update board set title = ?, content = ? where seq = ?";
@@ -46,10 +47,10 @@ public class BoardDAO extends AbstractDAO<BoardVO> {
 			throw new EntityNotFoundException("There is nothing to update.");
 	}
 
-	public void insertBoard(BoardVO param) throws Exception {
+	public void insertBoard(BoardVO param) {
 		int rows = executeStatement(BOARD_INSERT, param.getTitle(), param.getWriter(), param.getContent());
 		if (rows <= 0)
-			throw new Exception("Insert failed.");
+			throw new RuntimeException("Insert failed.");
 	}
 
 	public void deleteBoard(BoardVO param) throws EntityNotFoundException {

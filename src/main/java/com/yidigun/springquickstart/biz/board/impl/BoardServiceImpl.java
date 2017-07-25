@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yidigun.springquickstart.biz.board.BoardDAO;
 import com.yidigun.springquickstart.biz.board.BoardService;
 import com.yidigun.springquickstart.biz.board.BoardVO;
 import com.yidigun.springquickstart.biz.common.EntityNotFoundException;
