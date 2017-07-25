@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yidigun.springquickstart.biz.board.BoardService;
 import com.yidigun.springquickstart.biz.board.BoardVO;
+import com.yidigun.springquickstart.biz.common.EntityNotFoundException;
 
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
@@ -25,17 +26,23 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void updateBoard(BoardVO param) {
+	public void updateBoard(BoardVO param) throws EntityNotFoundException {
 		boardDAO.updateBoard(param);		
 	}
 
 	@Override
 	public void insertBoard(BoardVO param) {
-		boardDAO.insertBoard(param);
+		try {
+			boardDAO.insertBoard(param);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public void deleteBoard(BoardVO param) {
+	public void deleteBoard(BoardVO param) throws EntityNotFoundException {
 		boardDAO.deleteBoard(param);
 	}
 

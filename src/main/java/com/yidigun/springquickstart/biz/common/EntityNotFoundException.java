@@ -1,6 +1,6 @@
 package com.yidigun.springquickstart.biz.common;
 
-public class EntityNotFoundException extends RuntimeException {
+public class EntityNotFoundException extends Exception {
 
 	private static final long serialVersionUID = 7245802386298044414L;
 

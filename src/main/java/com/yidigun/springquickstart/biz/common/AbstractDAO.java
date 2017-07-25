@@ -10,7 +10,7 @@ import java.util.List;
 abstract public class AbstractDAO<T> {
 	
 	abstract protected T mapObject(ResultSet rs) throws SQLException;
-
+	
 	protected int executeStatement(String sql, Object... params) {
 		
 		Connection conn = null;
@@ -20,20 +20,7 @@ abstract public class AbstractDAO<T> {
 			conn = JdbcUtils.getConnection();
 			stmt = conn.prepareStatement(sql);
 
-			for (int i = 0; i < params.length; i++) {
-				Object param = params[i];
-				
-				if (param == null) {
-					stmt.setNull(i + 1, java.sql.Types.NULL);
-				}
-				else if (param instanceof Integer) {
-					stmt.setInt(i + 1, (Integer)param);
-				}
-				else {
-					stmt.setString(i + 1, param.toString());
-				}
-			}
-
+			JdbcUtils.bindParameters(stmt, params);
 			return stmt.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -44,6 +31,32 @@ abstract public class AbstractDAO<T> {
 		}
 	}
 	
+	protected <V> V getValue(String sql, Class<V> type, Object... params) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = JdbcUtils.getConnection();
+			stmt = conn.prepareStatement(sql);
+
+			JdbcUtils.bindParameters(stmt, params);
+			rs = stmt.executeQuery();
+
+			if (rs.next())
+				return rs.getObject(1, type);
+			else
+				return null;
+		}
+		catch (SQLException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+		finally {
+			JdbcUtils.close(conn, stmt, rs);
+		}
+	}
+
 	protected T getOne(String sql, Object... params) {
 		
 		Connection conn = null;
@@ -54,20 +67,7 @@ abstract public class AbstractDAO<T> {
 			conn = JdbcUtils.getConnection();
 			stmt = conn.prepareStatement(sql);
 
-			for (int i = 0; i < params.length; i++) {
-				Object param = params[i];
-				
-				if (param == null) {
-					stmt.setNull(i + 1, java.sql.Types.NULL);
-				}
-				else if (param instanceof Integer) {
-					stmt.setInt(i + 1, (Integer)param);
-				}
-				else {
-					stmt.setString(i + 1, param.toString());
-				}
-			}
-
+			JdbcUtils.bindParameters(stmt, params);
 			rs = stmt.executeQuery();
 
 			if (rs.next())
@@ -93,20 +93,7 @@ abstract public class AbstractDAO<T> {
 			conn = JdbcUtils.getConnection();
 			stmt = conn.prepareStatement(sql);
 
-			for (int i = 0; i < params.length; i++) {
-				Object param = params[i];
-				
-				if (param == null) {
-					stmt.setNull(i + 1, java.sql.Types.NULL);
-				}
-				else if (param instanceof Integer) {
-					stmt.setInt(i + 1, (Integer)param);
-				}
-				else {
-					stmt.setString(i + 1, param.toString());
-				}
-			}
-
+			JdbcUtils.bindParameters(stmt, params);
 			rs = stmt.executeQuery();
 
 			List<T> list = new ArrayList<T>();

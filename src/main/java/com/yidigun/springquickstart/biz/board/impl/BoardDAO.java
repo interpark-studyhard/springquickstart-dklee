@@ -40,19 +40,19 @@ public class BoardDAO extends AbstractDAO<BoardVO> {
 		return getOne(BOARD_GET, param.getSeq());
 	}
 
-	public void updateBoard(BoardVO param) {
+	public void updateBoard(BoardVO param) throws EntityNotFoundException {
 		int rows = executeStatement(BOARD_UPDATE, param.getTitle(), param.getContent(), param.getSeq());
 		if (rows <= 0)
 			throw new EntityNotFoundException("There is nothing to update.");
 	}
 
-	public void insertBoard(BoardVO param) {
+	public void insertBoard(BoardVO param) throws Exception {
 		int rows = executeStatement(BOARD_INSERT, param.getTitle(), param.getWriter(), param.getContent());
 		if (rows <= 0)
-			throw new RuntimeException("Insert failed.");
+			throw new Exception("Insert failed.");
 	}
 
-	public void deleteBoard(BoardVO param) {
+	public void deleteBoard(BoardVO param) throws EntityNotFoundException {
 		int rows = executeStatement(BOARD_DELETE, param.getSeq());
 		if (rows <= 0)
 			throw new EntityNotFoundException("There is nothing to delete.");
