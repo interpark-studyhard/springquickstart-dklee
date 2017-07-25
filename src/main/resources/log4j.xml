@@ -11,6 +11,12 @@
 	</appender>
 	
 	<!-- Application Loggers -->
+	<logger name="com.yidigun.beforespring">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="PARAM">
+		<level value="debug" />
+	</logger>
 	<logger name="com.yidigun.springquickstart">
 		<level value="info" />
 	</logger>
